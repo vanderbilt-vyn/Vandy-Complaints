@@ -1,5 +1,5 @@
 {
-  "name": "vyn complaints",
+  "name": "vyn_complaints",
   "version": "1.0.0",
   "description": "Test run",
   "main": "/src/server/index.js",
