@@ -1,7 +1,9 @@
 const browserSync = require('browser-sync').create(),
-    webpack = require('webpack'), 
-    gulp = require('gulp');
-const webpackSettings = require('./webpack.config');
+    webpack = require('webpack'),
+    path = require('path') 
+    gulp = require('gulp'),
+    mocha = require('gulp-mocha')
+    webpackSettings = require('./webpack.config');
 
 const assets = () => new Promise((resolve, reject) => {
     webpack(webpackSettings, (err, stats) => {
@@ -31,6 +33,19 @@ const reload = callback => {
 };
 exports.reload = reload;
 
-const watch = callback => gulp.watch('src/client/*.js', gulp.series(assets, reload));
+const test = () =>
+    gulp.src(
+        ['**/*spec.js', '!node_modules/**/*spec.js'],
+        {
+            ignore: 'node_modules', 
+            read: false
+        })
+        .pipe(mocha({reporter: 'nyan'}));
+exports.test = test;
+
+const watch = callback => gulp.watch([
+    '**/*.js', 
+    '!node_modules/**/*.js',
+    '!**/*spec.js'], gulp.series(assets, reload));
 exports.watch = watch;
 exports.develop = gulp.series(assets, serve, watch);
