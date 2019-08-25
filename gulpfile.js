@@ -24,14 +24,10 @@ const assets = () => new Promise((resolve, reject) => {
 });
 exports.assets = assets;
 
-const initEnv = async () => {
+const serve = async callback => {
     env = process.env.NODE_ENV ? process.env.NODE_ENV : "dev";
     conf = await envConfig("./config/config.json", env);
     port = process.env.PORT ? process.env.PORT : conf.port;
-}
-
-const serve = async callback => {
-    initEnv();
 
     // Setup our Express pipeline
     app = express();
