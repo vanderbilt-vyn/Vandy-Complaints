@@ -1,5 +1,4 @@
-const browserSync = require('browser-sync').create(),
-    webpack = require('webpack'),
+const browserSync = webpack = require('webpack'),
     express = require('express'),
     session = require("express-session"),
     path = require('path'), 
@@ -9,6 +8,8 @@ const browserSync = require('browser-sync').create(),
     envConfig = require('simple-env-config'),
     logger = require('morgan'),
     webpackSettings = require('./webpack.config');
+
+let env, conf, port, app;
 
 const assets = () => new Promise((resolve, reject) => {
     webpack(webpackSettings, (err, stats) => {
@@ -23,13 +24,17 @@ const assets = () => new Promise((resolve, reject) => {
 });
 exports.assets = assets;
 
+const initEnv = async () => {
+    env = process.env.NODE_ENV ? process.env.NODE_ENV : "dev";
+    conf = await envConfig("./config/config.json", env);
+    port = process.env.PORT ? process.env.PORT : conf.port;
+}
+
 const serve = async callback => {
-    const env = process.env.NODE_ENV ? process.env.NODE_ENV : "dev";
-    const conf = await envConfig("./config/config.json", env);
-    const port = process.env.PORT ? process.env.PORT : conf.port;
+    initEnv();
 
     // Setup our Express pipeline
-    let app = express();
+    app = express();
     if (env !== "test") app.use(logger("dev"));
     app.engine("pug", require("pug").__express);
     app.set("views", __dirname);
@@ -54,16 +59,7 @@ const serve = async callback => {
     app.get("*", (req, res) => {
         const user = req.session.user;
         console.log(`Loading app for: ${user ? user.username : "nobody!"}`);
-        let preloadedState = user
-          ? {
-              username: user.username,
-              first_name: user.first_name,
-              last_name: user.last_name,
-              primary_email: user.primary_email,
-              city: user.city,
-              games: user.games
-            }
-          : {};
+        let preloadedState = {};
         preloadedState = JSON.stringify(preloadedState).replace(/</g, "\\u003c");
         res.render("base.pug", {
           state: preloadedState
