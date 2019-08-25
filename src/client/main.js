@@ -1,3 +1,28 @@
-const func = () => {
-	console.log("hello");
+"use strict";
+import React, { Component, Fragment } from "react";
+import { render } from "react-dom";
+import { BrowserRouter, Route } from "react-router-dom";
+
+import { Landing } from "./components/landing"
+
+const foo = () => (
+	<div>Hello Landing</div>
+);
+
+class App extends Component {
+	constructor(props) {
+		super(props);
+	}
+
+	render() {
+		return (
+			<BrowserRouter>
+				<Fragment>
+					<Route exact path="/" component={Landing}/>
+				</Fragment>
+			</BrowserRouter>
+		)
+	}
 }
+
+render(<App/>, document.getElementById("mainDiv"));

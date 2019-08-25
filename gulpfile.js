@@ -1,8 +1,13 @@
 const browserSync = require('browser-sync').create(),
     webpack = require('webpack'),
-    path = require('path') 
+    express = require('express'),
+    session = require("express-session"),
+    path = require('path'), 
     gulp = require('gulp'),
-    mocha = require('gulp-mocha')
+    mocha = require('gulp-mocha'),
+    bodyParser = require("body-parser"),
+    envConfig = require('simple-env-config'),
+    logger = require('morgan'),
     webpackSettings = require('./webpack.config');
 
 const assets = () => new Promise((resolve, reject) => {
@@ -18,12 +23,57 @@ const assets = () => new Promise((resolve, reject) => {
 });
 exports.assets = assets;
 
-const serve = callback => {
-    browserSync.init({
-        server: './public',
-        port: 8080,
-        host: 'localhost'
-    }, callback);
+const serve = async callback => {
+    const env = process.env.NODE_ENV ? process.env.NODE_ENV : "dev";
+    const conf = await envConfig("./config/config.json", env);
+    const port = process.env.PORT ? process.env.PORT : conf.port;
+
+    // Setup our Express pipeline
+    let app = express();
+    if (env !== "test") app.use(logger("dev"));
+    app.engine("pug", require("pug").__express);
+    app.set("views", __dirname);
+    app.use(express.static(path.join(__dirname, "public")));
+    app.use(logger('dev'));
+
+    // Setup pipeline session support
+    app.store = session({
+        name: "session",
+        secret: "VynCorp",
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            path: "/"
+        }
+    });
+    app.use(app.store);
+    // Finish with the body parser
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.json());
+
+    app.get("*", (req, res) => {
+        const user = req.session.user;
+        console.log(`Loading app for: ${user ? user.username : "nobody!"}`);
+        let preloadedState = user
+          ? {
+              username: user.username,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              primary_email: user.primary_email,
+              city: user.city,
+              games: user.games
+            }
+          : {};
+        preloadedState = JSON.stringify(preloadedState).replace(/</g, "\\u003c");
+        res.render("base.pug", {
+          state: preloadedState
+        });
+    });
+
+    let server;
+    server = app.listen(port, () => {
+        console.log(`VUVoice ${env} listening on: ${server.address().port}`);
+    });
 };
 exports.serve = serve;
 
@@ -44,8 +94,7 @@ const test = () =>
 exports.test = test;
 
 const watch = callback => gulp.watch([
-    '**/*.js', 
-    '!node_modules/**/*.js',
-    '!**/*spec.js'], gulp.series(assets, reload));
+    './src/**/*.js',
+    '!./src/**/*.spec.js',], assets);
 exports.watch = watch;
 exports.develop = gulp.series(assets, serve, watch);
