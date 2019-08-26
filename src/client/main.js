@@ -4,6 +4,8 @@ import { render } from "react-dom";
 import { BrowserRouter, Route } from "react-router-dom";
 
 import { Landing } from "./components/landing"
+import { Start } from "./components/start"
+
 
 const foo = () => (
 	<div>Hello Landing</div>
@@ -19,7 +21,8 @@ class App extends Component {
 			<BrowserRouter>
 				<Fragment>
 					<Route exact path="/" component={Landing}/>
-				</Fragment>
+					<Route exact path="/start" component={Start}/>
+				</Fragment>	
 			</BrowserRouter>
 		)
 	}
