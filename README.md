@@ -30,7 +30,7 @@ The easiest hands off script to run and watch for all JS changes will be
 ```bash
 gulp develop
 ```
-This command will build Webpack and utilize Babel, launch a BrowserSync server (with full API functioning), create HTML templates with Pug, and finally set a watch for the JS.
+This command will build Webpack and utilize Babel, launch an Express server, create HTML templates with Pug, and finally set a watch for the JS. After the string " Starting 'watch'... " any new changes saved to a JS file within src will result in the assets task being re-ran. Once assets has been completed just refresh the browser and new changes will be rendered.
 In order to test all files use the command 
 ```bash
 gulp test
@@ -39,7 +39,7 @@ npm run test
 ```
 can be used to test the entire spec suite. Functioning for testing only one spec file soon to come.
 ## Test Framework
-The bulk of the testing framework will be handled by Mocha with plugins for Sinon (if expect call isn't enough may need to add 'assert' to require stack). All unit tests for components should have the naming convention <filename>.spec.js and be placed in the same folder as the component. Best practices should be a test for every line of code. Spies on outside services will be handled by Sinon and if testing necessary for server tracker Sinon.sandbox can be used.
+The bulk of the testing framework will be handled by Mocha with plugins for Sinon (if expect call isn't enough may need to add 'assert' to require stack). All unit tests for components should have the naming convention <filename>.spec.js and be placed in the same folder as the component (PLACEMENT FOR TESTING FILES IS SUBJECT TO CHANGE). Best practices should be a test for every line of code. Spies on outside services will be handled by Sinon and if testing necessary for server tracker Sinon.sandbox can be used.
 ## Making Changes
 The goal for this project is a clean interface and as such it should be easy for other developers to maintain. To ensure the testing branch and master are never contaminated we will use pull requests and branches to monitor progress. Any none trivial change should be made on a new branch from testing (after pulling latest changes).
 ```bash
