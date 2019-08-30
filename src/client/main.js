@@ -5,6 +5,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 
 import { Landing } from "./components/landing"
 import { Start } from "./components/start"
+import { Report_category } from "./components/report_category"
 
 
 const foo = () => (
@@ -22,6 +23,7 @@ class App extends Component {
 				<Fragment>
 					<Route exact path="/" component={Landing}/>
 					<Route exact path="/start" component={Start}/>
+					<Route exact path="/report-category" component={Report_category}/>
 				</Fragment>	
 			</BrowserRouter>
 		)

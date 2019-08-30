@@ -23,8 +23,11 @@ export class Start extends Component {
             <div>
                 <StartBase>
                     <h1>This is my start page!</h1>
+                    <Button component={Link} to="/report-category" variant="contained" color="primary">
+                        Report
+                    </Button>
                     <Button component={Link} to="/" variant="contained" color="primary">
-                        Primary
+                        Browse
                     </Button>
                 </StartBase>
             </div>    
