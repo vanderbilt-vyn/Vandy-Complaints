@@ -14,3 +14,5 @@ export const GenericButton = styled.button`
   line-height: 2em;
   font-size: 0.8em;
 `;
+
+//delete GenericButton since we can use material-ui button component?

@@ -26,7 +26,7 @@ export class Start extends Component {
                     <Button component={Link} to="/report-category" variant="contained" color="primary">
                         Report
                     </Button>
-                    <Button component={Link} to="/" variant="contained" color="primary">
+                    <Button component={Link} to="/browse" variant="contained" color="primary">
                         Browse
                     </Button>
                 </StartBase>
