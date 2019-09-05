@@ -5,17 +5,18 @@ import styled from "styled-components";
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
-import Button from '@material-ui/core/Button';
+import { Grid, Button } from '@material-ui/core';
 
 
 
 /*************************************************************************/
 
-const StartBase = styled.div`
-  display: flex;
-  justify-content: center;
-  grid-area: main;
-`;
+// const StartBase = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   grid-area: main;
+// `;
+//@Knowledge should we use styled components like this at all?
 
 export class Report_category extends Component {
     constructor(props) {
@@ -40,9 +41,18 @@ export class Report_category extends Component {
     render() {
         return (
             <div>
-                <StartBase>
-                    <h1>This is the report category page</h1>
-                    <InputLabel htmlFor="demo-controlled-open-select">Category</InputLabel>
+                <Grid
+                    container
+                    spacing={2}
+                    direction = "column"
+                    justify = "space-between"
+                    alignItems="center"
+                >
+                    <Grid item style={{textAlign: "center"}}>
+                        <h1>Which category does your complaint belong to?</h1>
+                    </Grid>
+                    <Grid item>
+                        <InputLabel htmlFor="demo-controlled-open-select">Category</InputLabel>    
                         <Select
                         name = "category"
                         value= {this.state.category}
@@ -56,10 +66,13 @@ export class Report_category extends Component {
                             <MenuItem value="Rec">Rec</MenuItem>
                             <MenuItem value="Other">Other</MenuItem>
                         </Select>
+                    </Grid>
+                    <Grid item>    
                         <Button disabled={this.state.category === ""? true: false} variant="contained" color="primary">
                             Submit
                         </Button>
-                </StartBase>
+                    </Grid>
+                </Grid>
             </div>    
         )
     };
