@@ -33,7 +33,6 @@ export class Report_category extends Component {
     }
 
     onSubmit(ev){
-        if(this.state.category === "") alert("please select a category from the drop-down menu");
         
 
     }
@@ -45,15 +44,9 @@ export class Report_category extends Component {
                     <h1>This is the report category page</h1>
                     <InputLabel htmlFor="demo-controlled-open-select">Category</InputLabel>
                         <Select
-                        // open= {open}
-                        // onClose={handleClose}
-                        // onOpen={handleOpen}
-                        value= 'category'
+                        name = "category"
+                        value= {this.state.category}
                         onChange={this.handleChange}
-                        inputProps={{
-                            name: 'age',
-                            id: 'demo-controlled-open-select',
-                        }}
                         >
                             <MenuItem value="Academic">Academic</MenuItem>
                             <MenuItem value="Dining">Dining</MenuItem>
@@ -63,7 +56,7 @@ export class Report_category extends Component {
                             <MenuItem value="Rec">Rec</MenuItem>
                             <MenuItem value="Other">Other</MenuItem>
                         </Select>
-                        <Button onClick={this.onSubmit} variant="contained" color="primary">
+                        <Button disabled={this.state.category === ""? true: false} variant="contained" color="primary">
                             Submit
                         </Button>
                 </StartBase>
