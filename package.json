@@ -22,7 +22,7 @@
     "request": "^2.88.0",
     "styled-components": "^4.1.3",
     "typeface-roboto": "0.0.75",
-    "underscore": "^1.9.1"
+    "underscore": "^1.12.1"
   },
   "scripts": {
     "build": "gulp assets",
